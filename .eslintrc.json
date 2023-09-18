@@ -1,0 +1,45 @@
+{
+  "extends": ["eslint:recommended", "plugin:import/errors", "prettier"],
+  "rules": {},
+  "plugins": ["import"],
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".scss"]
+      }
+    }
+  },
+  "overrides": [
+    {
+      "files": ["frontend/**/*.{js,jsx}"],
+      "extends": ["plugin:react/recommended", "plugin:jsx-a11y/recommended"],
+      "rules": {
+        "react/jsx-uses-react": "off",
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": 0
+      },
+      "plugins": ["react", "jsx-a11y"],
+      "parserOptions": {
+        "ecmaFeatures": {
+          "jsx": true
+        }
+      },
+      "env": {
+        "browser": true
+      },
+      "settings": {
+        "react": {
+          "version": "detect"
+        }
+      }
+    }
+  ]
+}

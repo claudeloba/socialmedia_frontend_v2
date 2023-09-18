@@ -1,0 +1,93 @@
+.register {
+  height: 100vh;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .card {
+    width: 50%;
+    display: flex;
+    flex-direction: row-reverse;
+    background-color: white;
+    border-radius: 10px;
+    min-height: 600px;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    .left {
+      flex: 1;
+      background: linear-gradient(
+        rgba(255, 0, 0, 0.409),
+        rgba(255, 109, 109, 0.409)
+      );
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      color: white;
+
+      h1 {
+        font-size: 50px;
+        line-height: 70px;
+      }
+
+      p {
+      }
+
+      span {
+        font-size: 14px;
+      }
+
+      button {
+        border-radius: 5px;
+        width: 50%;
+        padding: 15px;
+        border: none;
+        background-color: white;
+        color: rgba(255, 0, 0, 0.409);
+        font-weight: bold;
+        font-size: 18px;
+        cursor: pointer;
+      }
+    }
+
+    .right {
+      flex: 1;
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      justify-content: center;
+
+      h1 {
+        color: #555;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        input {
+          border: none;
+          border-bottom: 1px solid lightgray;
+          padding: 20px 10px;
+        }
+
+        button {
+          border-radius: 5px;
+
+          width: 50%;
+          padding: 15px;
+          border: none;
+          background-color: rgba(255, 0, 0, 0.409);
+          color: white;
+          font-weight: bold;
+          font-size: 18px;
+
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
