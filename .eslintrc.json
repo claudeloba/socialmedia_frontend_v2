@@ -19,7 +19,7 @@
   },
   "overrides": [
     {
-      "files": ["frontend/**/*.{js,jsx}"],
+      "files": ["src/**/*.{js,jsx}"],
       "extends": ["plugin:react/recommended", "plugin:jsx-a11y/recommended"],
       "rules": {
         "react/jsx-uses-react": "off",
