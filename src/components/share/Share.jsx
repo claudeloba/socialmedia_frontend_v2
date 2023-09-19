@@ -4,6 +4,8 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../api.js";
+import logger from "../../helpers/logger";
+
 const Share = () => {
   const [file, setFile] = useState(null);
   const [desc, setDesc] = useState("");
@@ -16,7 +18,7 @@ const Share = () => {
       const res = await makeRequest.post("/upload", formData);
       return res.data;
     } catch (err) {
-      console.log(err);
+      logger.error(`Upload failed: ${err.message}`);
     }
   };
 
