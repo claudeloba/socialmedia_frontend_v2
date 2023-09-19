@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { makeRequest } from "../api.js";
+import logger from "../helpers/logger.js";
 
 export const AuthContext = createContext();
 
@@ -35,7 +36,7 @@ export const AuthContextProvider = ({ children }) => {
       setCurrentUser(null);
       localStorage.removeItem("user");
     } catch (error) {
-      console.error(error);
+      logger.error(`Logout failed: ${error.message}`);
     }
   };
 
