@@ -13,6 +13,7 @@ import { useState } from "react";
 
 const Profile = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
+  const [error, setError] = useState(null);
   const { currentUser } = useContext(AuthContext);
 
   const userId = useLocation().pathname.split("/")[2];
@@ -45,24 +46,27 @@ const Profile = () => {
     }
   );
 
-  console.log(currentUser._id);
   const handleFollow = () => {
-    if (
-      relationshipData &&
-      Array.isArray(relationshipData) &&
-      currentUser?._id
-    ) {
-      mutation.mutate(relationshipData.includes(currentUser._id));
-    } else {
-      console.log(
-        "Either relationshipData is not ready or currentUser._id is undefined."
-      );
-      console.log("currentUser object:", JSON.stringify(currentUser, null, 2));
+    try {
+      if (
+        relationshipData &&
+        Array.isArray(relationshipData) &&
+        currentUser?._id
+      ) {
+        mutation.mutate(relationshipData.includes(currentUser._id));
+      } else {
+        throw new Error(
+          "Either relationshipData is not ready or currentUser._id is undefined."
+        );
+      }
+    } catch (err) {
+      setError(err.message);
     }
   };
 
   return (
     <div className="profile">
+      {error && <div className="error">Error: {error}</div>}
       {isLoading ? (
         "loading"
       ) : (
