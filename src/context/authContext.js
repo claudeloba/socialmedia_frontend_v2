@@ -7,6 +7,7 @@ export const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );
+  const [userUpdated, setUserUpdated] = useState(false);
 
   const register = async (inputs) => {
     await makeRequest.post("auth/register", inputs);
@@ -43,7 +44,16 @@ export const AuthContextProvider = ({ children }) => {
   }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout, register }}>
+    <AuthContext.Provider
+      value={{
+        currentUser,
+        login,
+        logout,
+        register,
+        userUpdated,
+        setUserUpdated,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
