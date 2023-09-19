@@ -15,9 +15,8 @@ const Profile = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const { currentUser } = useContext(AuthContext);
 
-  const userId = parseInt(useLocation().pathname.split("/")[2]);
-
-  const { isLoading, error, data } = useQuery(["user", userId], () =>
+  const userId = useLocation().pathname.split("/")[2];
+  const { isLoading, data } = useQuery(["user", userId], () =>
     makeRequest.get("/users/find/" + userId).then((res) => {
       return res.data;
     })
@@ -46,8 +45,20 @@ const Profile = () => {
     }
   );
 
+  console.log(currentUser._id);
   const handleFollow = () => {
-    mutation.mutate(relationshipData.includes(currentUser.id));
+    if (
+      relationshipData &&
+      Array.isArray(relationshipData) &&
+      currentUser?._id
+    ) {
+      mutation.mutate(relationshipData.includes(currentUser._id));
+    } else {
+      console.log(
+        "Either relationshipData is not ready or currentUser._id is undefined."
+      );
+      console.log("currentUser object:", JSON.stringify(currentUser, null, 2));
+    }
   };
 
   return (
@@ -85,11 +96,11 @@ const Profile = () => {
                 </div>
                 {rIsLoading ? (
                   "loading"
-                ) : userId === currentUser.id ? (
+                ) : userId === currentUser._id ? (
                   <button onClick={() => setOpenUpdate(true)}>update</button>
                 ) : (
                   <button onClick={handleFollow}>
-                    {relationshipData.includes(currentUser.id)
+                    {relationshipData.includes(currentUser._id)
                       ? "Following"
                       : "Follow"}
                   </button>
