@@ -43,10 +43,10 @@ const Navbar = () => {
         <div className="user">
           <img src={"/upload/" + currentUser.profilePic} alt="" />
           <Link
-            to={`/profile/${currentUser.id}`}
+            to={`/profile/${currentUser._id}`}
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            <span>{currentUser.name}</span>
+            <span>{currentUser.username}</span>
           </Link>
           <LogoutIcon className="hovered" onClick={handleLogout} />
         </div>
