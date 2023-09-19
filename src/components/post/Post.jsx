@@ -18,8 +18,8 @@ const Post = ({ post }) => {
   const [editMode, setEditMode] = useState(false);
   const { currentUser } = useContext(AuthContext);
 
-  const { isLoading, error, data } = useQuery(["likes", post.id], () =>
-    makeRequest.get("/likes?postId=" + post.id).then((res) => {
+  const { isLoading, data } = useQuery(["likes", post._id], () =>
+    makeRequest.get("/likes?postId=" + post._id).then((res) => {
       return res.data;
     })
   );
@@ -28,8 +28,8 @@ const Post = ({ post }) => {
 
   const mutation = useMutation(
     (liked) => {
-      if (liked) return makeRequest.delete("/likes?postId=" + post.id);
-      return makeRequest.post("/likes", { postId: post.id });
+      if (liked) return makeRequest.delete("/likes?postId=" + post._id);
+      return makeRequest.post("/likes", { postId: post._id });
     },
     {
       onSuccess: () => {
@@ -49,11 +49,11 @@ const Post = ({ post }) => {
   );
 
   const handleLike = () => {
-    mutation.mutate(data.includes(currentUser.id));
+    mutation.mutate(data.includes(currentUser._id));
   };
 
   const handleDelete = () => {
-    deleteMutation.mutate(post.id);
+    deleteMutation.mutate(post._id);
   };
 
   const handleEdit = () => {
@@ -69,19 +69,22 @@ const Post = ({ post }) => {
       <div className="container">
         <div className="user">
           <div className="userInfo">
-            <img src={"/upload/" + post.profilePic} alt="" />
+            <img src={"/upload/" + post.userId.profilePic} alt="" />
             <div className="details">
               <Link
-                to={`/profile/${post.userId}`}
+                to={`/profile/${post.userId._id}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <span className="name">{post.name}</span>
+                <span className="name">{post.userId.username}</span>
               </Link>
               <span className="date">{moment(post.createdAt).fromNow()}</span>
             </div>
           </div>
-          <MoreHorizIcon onClick={() => setMenuOpen(!menuOpen)} />
-          {menuOpen && post.userId === currentUser.id && (
+          <MoreHorizIcon
+            className="dots"
+            onClick={() => setMenuOpen(!menuOpen)}
+          />
+          {menuOpen && post.userId._id === currentUser._id && (
             <div className="buttons">
               <button onClick={handleEdit}>Edit</button>
               <button onClick={handleDelete}>Delete</button>
@@ -97,10 +100,20 @@ const Post = ({ post }) => {
               <img src={"/upload/" + post.img} alt="" />
             </div>
             <div className="info">
-              <div className="item" onClick={handleLike}>
+              <div
+                role="button"
+                tabIndex={0}
+                className="item"
+                onClick={handleLike}
+                onKeyDown={(e) => {
+                  if (e.code === "Enter" || e.code === "Space") {
+                    setCommentOpen(!commentOpen);
+                  }
+                }}
+              >
                 {isLoading ? (
                   "loading"
-                ) : data.includes(currentUser.id) ? (
+                ) : data.includes(currentUser._id) ? (
                   <FavoriteOutlinedIcon style={{ color: "red" }} />
                 ) : (
                   <FavoriteBorderOutlinedIcon />
@@ -108,8 +121,15 @@ const Post = ({ post }) => {
                 {data?.length} Likes
               </div>
               <div
+                role="button"
+                tabIndex={0}
                 className="item"
                 onClick={() => setCommentOpen(!commentOpen)}
+                onKeyDown={(e) => {
+                  if (e.code === "Enter" || e.code === "Space") {
+                    setCommentOpen(!commentOpen);
+                  }
+                }}
               >
                 <TextsmsOutlinedIcon />
                 Comments
@@ -117,7 +137,7 @@ const Post = ({ post }) => {
             </div>
           </>
         )}
-        {commentOpen && <Comments postId={post.id} />}
+        {commentOpen && <Comments postId={post._id} />}
       </div>
     </div>
   );
