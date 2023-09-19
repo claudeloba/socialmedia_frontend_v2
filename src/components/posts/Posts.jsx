@@ -17,7 +17,7 @@ const Posts = ({ userId }) => {
         : isLoading
         ? "loading"
         : data.map((post, index) => (
-            <Post post={post} key={`post-${post.id}-${index}`} />
+            <Post post={post} key={`post-${post._id}`} />
           ))}
     </div>
   );

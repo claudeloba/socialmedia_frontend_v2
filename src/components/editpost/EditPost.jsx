@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../api.js";
 
@@ -8,7 +8,7 @@ const EditPost = ({ post, onFinishEdit }) => {
   const queryClient = useQueryClient();
 
   const editMutation = useMutation(
-    () => makeRequest.put("/posts/" + post.id, { desc }),
+    () => makeRequest.put("/posts/" + post._id, { desc }),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["posts"]);
