@@ -1,8 +1,10 @@
-import { useState } from "react";
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import { useState, useContext } from "react";
 import { makeRequest } from "../../api.js";
 import "./update.scss";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { AuthContext } from "../../context/authContext";
 
 const Update = ({ setOpenUpdate, user }) => {
   const [cover, setCover] = useState(null);
@@ -10,10 +12,12 @@ const Update = ({ setOpenUpdate, user }) => {
   const [texts, setTexts] = useState({
     email: user.email,
     password: user.password,
-    name: user.name,
+    username: user.username,
     city: user.city,
     website: user.website,
   });
+
+  const { setUserUpdated } = useContext(AuthContext);
 
   const upload = async (file) => {
     try {
@@ -38,7 +42,9 @@ const Update = ({ setOpenUpdate, user }) => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["user"]);
+        queryClient.refetchQueries(["user"], { active: true });
+
+        setUserUpdated((prev) => !prev);
       },
     }
   );
@@ -52,6 +58,7 @@ const Update = ({ setOpenUpdate, user }) => {
     profileUrl = profile ? await upload(profile) : user.profilePic;
 
     mutation.mutate({ ...texts, coverPic: coverUrl, profilePic: profileUrl });
+
     setOpenUpdate(false);
     setCover(null);
     setProfile(null);
@@ -118,11 +125,11 @@ const Update = ({ setOpenUpdate, user }) => {
             name="password"
             onChange={handleChange}
           />
-          <label>Name</label>
+          <label>Username</label>
           <input
             type="text"
-            value={texts.name}
-            name="name"
+            value={texts.username}
+            name="username"
             onChange={handleChange}
           />
           <label>Country / City</label>
